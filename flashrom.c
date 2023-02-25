@@ -41,6 +41,8 @@ const char flashrom_version[] = FLASHROM_VERSION;
 
 static const struct programmer_entry *programmer = NULL;
 
+bool skipsize = false;
+
 /*
  * Programmers supporting multiple buses can have differing size limits on
  * each bus. Store the limits for each bus in a common struct.
