@@ -52,15 +52,20 @@ int read_buf_from_file(unsigned char *buf, unsigned long size,
 		ret = 1;
 		goto out;
 	}
-	if ((image_stat.st_size != (intmax_t)size) && strcmp(filename, "-")) {
+	if ((image_stat.st_size != (intmax_t)size) && !skipsize && strcmp(filename, "-")) {
 		msg_gerr("Error: Image size (%jd B) doesn't match the expected size (%lu B)!\n",
 			 (intmax_t)image_stat.st_size, size);
 		ret = 1;
 		goto out;
 	}
+        if ((image_stat.st_size <= (intmax_t)size) && skipsize) {
+		msg_cerr("WARNING: Image size (%jd B) is smaller than flash chip's size (%lu B), forced to proceed.\n",
+			 (intmax_t)image_stat.st_size, size);
+		ret = 0;
+	}
 
 	unsigned long numbytes = fread(buf, 1, size, image);
-	if (numbytes != size) {
+	if (numbytes != size && !skipsize) {
 		msg_gerr("Error: Failed to read complete file. Got %ld bytes, "
 			 "wanted %ld!\n", numbytes, size);
 		ret = 1;

@@ -649,6 +649,7 @@ extern enum flashrom_log_level verbose_logfile;
 int open_logfile(const char * const filename);
 int close_logfile(void);
 void start_logging(void);
+extern bool skipsize;
 int flashrom_print_cb(enum flashrom_log_level level, const char *fmt, va_list ap);
 void flashrom_progress_cb(struct flashrom_flashctx *flashctx);
 /* Let gcc and clang check for correct printf-style format strings. */
